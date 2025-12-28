@@ -21,24 +21,24 @@ export const EmployeeModal = ({ show, handleClose, employeeId, onSuccess }: Prop
     const [employee, setEmployee] = useState<Employee>(initialEmployee);
     const [error, setError] = useState<string>('');
 
-    // Cargar datos si estamos editando
+
     useEffect(() => {
+
+        const loadEmployee = async (id: number) => {
+            try {
+                const response = await EmployeeService.getById(id);
+                setEmployee(response.data);
+            } catch (err) {
+                console.error(err);
+                setError("Error al cargar el empleado");
+            }
+        };
+
         if (employeeId) {
             loadEmployee(employeeId);
-        } else {
-            setEmployee(initialEmployee); // Limpiar form si es nuevo
         }
-    }, [employeeId, show]);
+    }, [employeeId]);
 
-    const loadEmployee = async (id: number) => {
-        try {
-            const response = await EmployeeService.getById(id);
-            setEmployee(response.data);
-        } catch (err) {
-            console.error(err);
-            setError("Error al cargar el empleado");
-        }
-    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -71,7 +71,7 @@ export const EmployeeModal = ({ show, handleClose, employeeId, onSuccess }: Prop
         <>
             {/* Fondo oscuro del modal */}
             <div className="modal-backdrop show"></div>
-            
+
             {/* Modal */}
             <div className="modal d-block" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered">
@@ -84,19 +84,19 @@ export const EmployeeModal = ({ show, handleClose, employeeId, onSuccess }: Prop
                         </div>
                         <div className="modal-body p-4">
                             {error && <div className="alert alert-danger">{error}</div>}
-                            
+
                             <form onSubmit={handleSubmit}>
                                 <div className="row g-3">
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
-                                            <input type="text" className="form-control" id="firstname" name="firstname" 
+                                            <input type="text" className="form-control" id="firstname" name="firstname"
                                                 placeholder="Nombre" value={employee.firstname} onChange={handleChange} required />
                                             <label htmlFor="firstname">Nombre</label>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-floating mb-3">
-                                            <input type="text" className="form-control" id="lastname" name="lastname" 
+                                            <input type="text" className="form-control" id="lastname" name="lastname"
                                                 placeholder="Apellido" value={employee.lastname} onChange={handleChange} required />
                                             <label htmlFor="lastname">Apellido</label>
                                         </div>
@@ -104,20 +104,20 @@ export const EmployeeModal = ({ show, handleClose, employeeId, onSuccess }: Prop
                                 </div>
 
                                 <div className="form-floating mb-3">
-                                    <input type="email" className="form-control" id="email" name="email" 
+                                    <input type="email" className="form-control" id="email" name="email"
                                         placeholder="name@example.com" value={employee.email} onChange={handleChange} required />
                                     <label htmlFor="email">Email Corporativo</label>
                                 </div>
 
                                 <div className="form-floating mb-3">
-                                    <input type="text" className="form-control" id="phone" name="phone" 
+                                    <input type="text" className="form-control" id="phone" name="phone"
                                         placeholder="Teléfono" value={employee.phone || ''} onChange={handleChange} />
                                     <label htmlFor="phone">Teléfono (Opcional)</label>
                                 </div>
 
                                 <div className="form-floating mb-4">
-                                    <input type="number" className="form-control" id="salary" name="salary" 
-                                        placeholder="0.00" value={employee.salary} onChange={handleChange} required min="1" step="0.01"/>
+                                    <input type="number" className="form-control" id="salary" name="salary"
+                                        placeholder="0.00" value={employee.salary} onChange={handleChange} required min="1" step="0.01" />
                                     <label htmlFor="salary">Salario Mensual ($)</label>
                                 </div>
 

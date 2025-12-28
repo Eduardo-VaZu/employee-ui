@@ -6,8 +6,7 @@ import { EmployeeModal } from './EmployeeModal';
 export const EmployeeList = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
     const [loading, setLoading] = useState(true);
-    
-    // Estados para el Modal
+
     const [showModal, setShowModal] = useState(false);
     const [selectedId, setSelectedId] = useState<number | null>(null);
 
@@ -28,12 +27,12 @@ export const EmployeeList = () => {
     };
 
     const handleCreate = () => {
-        setSelectedId(null); // Null significa crear
+        setSelectedId(null);
         setShowModal(true);
     }
 
     const handleEdit = (id: number) => {
-        setSelectedId(id); // ID significa editar
+        setSelectedId(id);
         setShowModal(true);
     }
 
@@ -45,7 +44,7 @@ export const EmployeeList = () => {
     }
 
     const handleSuccess = () => {
-        loadEmployees(); // Recargar la tabla
+        loadEmployees();
         setShowModal(false);
     }
 
@@ -131,7 +130,6 @@ export const EmployeeList = () => {
                 </div>
             </div>
 
-            {/* Inyectamos el Modal aquí */}
             <EmployeeModal 
                 show={showModal} 
                 handleClose={() => setShowModal(false)}
